@@ -1,0 +1,191 @@
+
+       
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .menu { display: flex; gap: 30px; }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 400;
+            transition: 0.3s;
+        }
+        .menu a:hover { opacity: 0.7; text-transform: uppercase; }
+        .menu a.active { border-bottom: 2px solid #ff4b2b; }
+
+        .hero {
+            padding-top: 80px;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url('https://source.unsplash.com/1600x900/?game,technology') center/cover no-repeat;
+            text-align: left;
+            padding: 0 10%;
+        }
+        .hero-text { max-width: 600px; z-index: 2; }
+        .hero-text h1 {
+            font-size: 4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .hero-text p {
+            font-size: 1.4em;
+            color: #ddd;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .portfolio {
+            padding: 80px 5%;
+            background: black;
+        }
+        .portfolio h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .games {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .game-card {
+            background: linear-gradient(135deg, #333, #555);
+            width: 320px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+        }
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.2);
+        }
+        .game-card img { width: 100%; border-radius: 10px; }
+        .game-card h3 { font-size: 1.5em; margin: 15px 0 10px; }
+        .game-card p { font-size: 1em; color: #bbb; margin-bottom: 15px; }
+        .game-card a {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .game-card a:hover { opacity: 0.85; transform: translateY(-5px); }
+
+        .avaliacao { margin-top: 15px; font-size: 1.2em; color: gold; }
+
+        .sobre {
+            padding: 80px 5%;
+            background: #111;
+        }
+        .equipe {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .membro {
+            width: 250px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        }
+        .membro img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+
+        .contato {
+            padding: 80px 5%;
+            background: #000;
+        }
+        .formulario {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .formulario input,
+        .formulario textarea {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .formulario button {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+        }
+        .formulario button:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            background: #1A1A1A;
+            color: #bbb;
+        }
+
+        @media (max-width: 768px) {
+            .menu { flex-direction: column; gap: 15px; align-items: center; }
+            .hero-text h1 { font-size: 2.5em; }
+            .hero-text p { font-size: 1.1em; }
+            .game-card { width: 90%; }
+            .equipe { flex-direction: column; }
+        }
+  
+        .avaliacao-estrelas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.estrela {
+  color: #444;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.estrela:hover,
+.estrela.selecionada {
+  color: gold;
+  transform: scale(1.2);
+}
+
+.avaliacao-texto {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #ccc;
+}
