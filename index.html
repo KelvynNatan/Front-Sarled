@@ -4,90 +4,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Starled Studios, starled, roblox, EB, Exército brasileiro, EB do snake, eb do potmaku">
-    <title>Starled Studios</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta name="keywords" content="NEXOR Studios, nexor, roblox, EB, Exército brasileiro, EB do snake, eb do potmaku">
+    <title>NEXOR Studios - Criando o Futuro dos Jogos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="logo-loader">NEXOR</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
     <header>
-        <nav class="menu">
-            <a href="#hero">Início</a>
-            <a href="#portfolio">Portfólio</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#contato">Contato</a>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="logo">NEXOR</span>
+                <span class="logo-subtitle">STUDIOS</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#hero" class="nav-link active"><i class="fas fa-home"></i> Início</a>
+                <a href="#portfolio" class="nav-link"><i class="fas fa-gamepad"></i> Portfólio</a>
+                <a href="#sobre" class="nav-link"><i class="fas fa-users"></i> Sobre</a>
+                <a href="#contato" class="nav-link"><i class="fas fa-envelope"></i> Contato</a>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </nav>
     </header>
 
     <section class="hero" id="hero">
-        <div class="hero-text">
-            <h1>Construindo o Futuro dos Jogos</h1>
-            <p>Nós, da Starled Studios, somos uma empresa focada em criar experiências imersivas no Roblox que encantarão milhões de jogadores.</p>
+        <div class="hero-content" data-aos="fade-up">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">Construindo o</span>
+                    <span class="title-highlight">Futuro dos Jogos</span>
+                </h1>
+                <p class="hero-description">
+                    Nós, da NEXOR Studios, somos uma empresa focada em criar experiências imersivas no Roblox que encantarão milhões de jogadores ao redor do mundo.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="1000000">0</span>
+                        <span class="stat-label">Jogadores</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="50">0</span>
+                        <span class="stat-label">Projetos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="5">0</span>
+                        <span class="stat-label">Anos</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#portfolio" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Ver Jogos
+                    </a>
+                    <a href="#contato" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i> Contato
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-elements">
+                    <div class="floating-card" data-aos="fade-left" data-aos-delay="200">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Gaming</span>
+                    </div>
+                    <div class="floating-card" data-aos="fade-left" data-aos-delay="400">
+                        <i class="fas fa-code"></i>
+                        <span>Development</span>
+                    </div>
+                    <div class="floating-card" data-aos="fade-left" data-aos-delay="600">
+                        <i class="fas fa-users"></i>
+                        <span>Community</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </section>
 
     <section class="portfolio" id="portfolio">
-        <h2>Nosso Portfólio</h2>
-        <div class="games">
-            <div class="game-card">
-                <img src="img/jogo.png" alt="">
-                <h3>Projeto em Destaque</h3>
-                <p>Estamos trabalhando em novidades incríveis.</p>
-                <div class="avaliacao-estrelas">
-  <span class="estrela" data-valor="1">&#9733;</span>
-  <span class="estrela" data-valor="2">&#9733;</span>
-  <span class="estrela" data-valor="3">&#9733;</span>
-  <span class="estrela" data-valor="4">&#9733;</span>
-  <span class="estrela" data-valor="5">&#9733;</span>
-</div>
-<p class="avaliacao-texto">Clique para avaliar!</p>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Nosso Portfólio</h2>
+                <p class="section-subtitle">Explore nossos jogos mais populares e inovadores</p>
+            </div>
+            
+            <div class="portfolio-filters" data-aos="fade-up" data-aos-delay="200">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="action">Ação</button>
+                <button class="filter-btn" data-filter="strategy">Estratégia</button>
+                <button class="filter-btn" data-filter="simulation">Simulação</button>
+            </div>
 
-                <a href="https://www.roblox.com/pt/games/127121345254769/EB-Ex-rcito-Brasileiro" target="_blank">Jogar Agora</a>
+            <div class="games-carousel" data-aos="fade-up" data-aos-delay="400">
+                <div class="carousel-container">
+                    <div class="game-card" data-category="action">
+                        <div class="card-image">
+                            <img src="Xdev-images/eb.webp" alt="Exército Brasileiro">
+                            <div class="card-overlay">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3>Exército Brasileiro</h3>
+                                <span class="game-status online">Online</span>
+                            </div>
+                            <p>Experiência militar imersiva com treinamentos realistas e missões estratégicas.</p>
+                            <div class="game-stats">
+                                <div class="stat">
+                                    <i class="fas fa-users"></i>
+                                    <span class="live-count" data-game="eb">50,247</span>
+                                    <span class="live-indicator">🔴 AO VIVO</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8/5</span>
+                                </div>
+                            </div>
+                            <div class="avaliacao-estrelas">
+                                <span class="estrela" data-valor="1">★</span>
+                                <span class="estrela" data-valor="2">★</span>
+                                <span class="estrela" data-valor="3">★</span>
+                                <span class="estrela" data-valor="4">★</span>
+                                <span class="estrela" data-valor="5">★</span>
+                            </div>
+                            <p class="avaliacao-texto">Clique para avaliar!</p>
+                            <a href="https://www.roblox.com/pt/games/127121345254769/EB-Ex-rcito-Brasileiro" target="_blank" class="btn btn-game">
+                                <i class="fas fa-gamepad"></i> Jogar Agora
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="game-card" data-category="strategy">
+                        <div class="card-image">
+                            <img src="Xdev-images/BFE.webp" alt="Battlefield Elite">
+                            <div class="card-overlay">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3>Battlefield Elite</h3>
+                                <span class="game-status beta">Beta</span>
+                            </div>
+                            <p>Combate tático avançado com estratégias militares e operações especiais.</p>
+                            <div class="game-stats">
+                                <div class="stat">
+                                    <i class="fas fa-users"></i>
+                                    <span class="live-count" data-game="bfe">25,892</span>
+                                    <span class="live-indicator">🔴 AO VIVO</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6/5</span>
+                                </div>
+                            </div>
+                            <div class="avaliacao-estrelas">
+                                <span class="estrela" data-valor="1">★</span>
+                                <span class="estrela" data-valor="2">★</span>
+                                <span class="estrela" data-valor="3">★</span>
+                                <span class="estrela" data-valor="4">★</span>
+                                <span class="estrela" data-valor="5">★</span>
+                            </div>
+                            <p class="avaliacao-texto">Clique para avaliar!</p>
+                            <a href="#" class="btn btn-game">
+                                <i class="fas fa-gamepad"></i> Em Breve
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="game-card" data-category="simulation">
+                        <div class="card-image">
+                            <img src="Xdev-images/bac.webp" alt="Base Aérea Civil">
+                            <div class="card-overlay">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3>Base Aérea Civil</h3>
+                                <span class="game-status online">Online</span>
+                            </div>
+                            <p>Simulação realista de aviação civil com controle de tráfego aéreo.</p>
+                            <div class="game-stats">
+                                <div class="stat">
+                                    <i class="fas fa-users"></i>
+                                    <span class="live-count" data-game="bac">30,634</span>
+                                    <span class="live-indicator">🔴 AO VIVO</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7/5</span>
+                                </div>
+                            </div>
+                            <div class="avaliacao-estrelas">
+                                <span class="estrela" data-valor="1">★</span>
+                                <span class="estrela" data-valor="2">★</span>
+                                <span class="estrela" data-valor="3">★</span>
+                                <span class="estrela" data-valor="4">★</span>
+                                <span class="estrela" data-valor="5">★</span>
+                            </div>
+                            <p class="avaliacao-texto">Clique para avaliar!</p>
+                            <a href="#" class="btn btn-game">
+                                <i class="fas fa-gamepad"></i> Jogar Agora
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="game-card" data-category="action">
+                        <div class="card-image">
+                            <img src="Xdev-images/jogo1.webp" alt="Combat Zone">
+                            <div class="card-overlay">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3>Combat Zone</h3>
+                                <span class="game-status coming-soon">Em Breve</span>
+                            </div>
+                            <p>Ação intensa em combates urbanos com gráficos de última geração.</p>
+                            <div class="game-stats">
+                                <div class="stat">
+                                    <i class="fas fa-users"></i>
+                                    <span>Em Desenvolvimento</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-star"></i>
+                                    <span>-/-</span>
+                                </div>
+                            </div>
+                            <div class="avaliacao-estrelas">
+                                <span class="estrela" data-valor="1">★</span>
+                                <span class="estrela" data-valor="2">★</span>
+                                <span class="estrela" data-valor="3">★</span>
+                                <span class="estrela" data-valor="4">★</span>
+                                <span class="estrela" data-valor="5">★</span>
+                            </div>
+                            <p class="avaliacao-texto">Clique para avaliar!</p>
+                            <a href="#" class="btn btn-game disabled">
+                                <i class="fas fa-clock"></i> Em Desenvolvimento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="sobre" id="sobre">
-        <h2>Sobre Nós</h2>
-        <div class="equipe">
-            <div class="membro">
-                <img src="img/equipe1.jpg" alt="X7damiraxitada, programador da equipe">
-                <h3>X7damiraxitada</h3>
-                <p>Programador</p>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Sobre Nós</h2>
+                <p class="section-subtitle">Conheça a equipe por trás dos melhores jogos do Roblox</p>
             </div>
-            <div class="membro">
-                <img src="img/equipe2.jpg" alt="Potmaku, cofundador da equipe">
-                <h3>Potmaku</h3>
-                <p>Co-Fundador • Gerente de Projetos</p>
+            
+            <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="company-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Nossa Missão</h3>
+                        <p>Criar experiências de jogo únicas e envolventes que conectem milhões de jogadores ao redor do mundo.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Nossa Visão</h3>
+                        <p>Ser reconhecida como a principal desenvolvedora de jogos inovadores na plataforma Roblox.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Nossos Valores</h3>
+                        <p>Inovação, qualidade, comunidade e diversão são os pilares que guiam nosso trabalho diário.</p>
+                    </div>
+                </div>
             </div>
-            <div class="membro">
-                <img src="img/equipe3.jpg" alt="Snake, diretor criativo da equipe">
-                <h3>Snake</h3>
-                <p>Diretor Criativo</p>
+
+            <div class="team-section" data-aos="fade-up" data-aos-delay="400">
+                <h3 class="team-title">Nossa Equipe</h3>
+                <div class="equipe">
+                    <div class="membro" data-aos="flip-left" data-aos-delay="100">
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="member-status online"></div>
+                            </div>
+                            <div class="member-info">
+                                <h3>X7damiraxitada</h3>
+                                <p class="member-role">Lead Developer</p>
+                                <p class="member-description">Especialista em programação Lua e arquitetura de sistemas complexos no Roblox.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Lua</span>
+                                    <span class="skill">Roblox Studio</span>
+                                    <span class="skill">Game Design</span>
+                                </div>
+                                <div class="member-social">
+                                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="membro" data-aos="flip-left" data-aos-delay="200">
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="member-status online"></div>
+                            </div>
+                            <div class="member-info">
+                                <h3>Potmaku</h3>
+                                <p class="member-role">Co-Founder & Creative Director</p>
+                                <p class="member-description">Visionário criativo responsável pelo design e conceito dos nossos jogos mais populares.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Game Design</span>
+                                    <span class="skill">UI/UX</span>
+                                    <span class="skill">Strategy</span>
+                                </div>
+                                <div class="member-social">
+                                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="membro" data-aos="flip-left" data-aos-delay="300">
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="member-status away"></div>
+                            </div>
+                            <div class="member-info">
+                                <h3>Snake</h3>
+                                <p class="member-role">Art Director & 3D Artist</p>
+                                <p class="member-description">Artista talentoso que dá vida aos nossos mundos virtuais com designs únicos e envolventes.</p>
+                                <div class="member-skills">
+                                    <span class="skill">3D Modeling</span>
+                                    <span class="skill">Blender</span>
+                                    <span class="skill">Texturing</span>
+                                </div>
+                                <div class="member-social">
+                                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-artstation"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="contato" id="contato">
-        <h2>Fale Conosco</h2>
-        <form class="formulario" action="#" method="post">
-            <input type="text" name="nome" placeholder="Seu nome" required>
-            <input type="email" name="email" placeholder="Seu e-mail" required>
-            <textarea name="mensagem" rows="5" placeholder="Sua mensagem" required></textarea>
-            <button type="submit">Enviar Mensagem</button>
-        </form>
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Comunidade & Contato</h2>
+                <p class="section-subtitle">Participe do nosso fórum e entre em contato conosco!</p>
+            </div>
+            
+            <!-- Forum Section -->
+            <div class="forum-section" data-aos="fade-up" data-aos-delay="100">
+                <div class="forum-header">
+                    <h3><i class="fas fa-comments"></i> Fórum da Comunidade NEXOR</h3>
+                    <p>Conecte-se com outros jogadores, compartilhe estratégias e discuta sobre nossos jogos!</p>
+                </div>
+                <div class="forum-categories">
+                    <div class="forum-category">
+                        <div class="category-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Discussões Gerais</h4>
+                            <p>Converse sobre todos os nossos jogos</p>
+                            <span class="post-count">1,247 posts</span>
+                        </div>
+                        <div class="category-stats">
+                            <span class="online-users">🟢 342 online</span>
+                        </div>
+                    </div>
+                    <div class="forum-category">
+                        <div class="category-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Competições & Eventos</h4>
+                            <p>Participe de torneios e eventos especiais</p>
+                            <span class="post-count">892 posts</span>
+                        </div>
+                        <div class="category-stats">
+                            <span class="online-users">🟢 156 online</span>
+                        </div>
+                    </div>
+                    <div class="forum-category">
+                        <div class="category-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Suporte Técnico</h4>
+                            <p>Obtenha ajuda com problemas técnicos</p>
+                            <span class="post-count">634 posts</span>
+                        </div>
+                        <div class="category-stats">
+                            <span class="online-users">🟢 89 online</span>
+                        </div>
+                    </div>
+                    <div class="forum-category">
+                        <div class="category-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Sugestões & Feedback</h4>
+                            <p>Compartilhe suas ideias para melhorar nossos jogos</p>
+                            <span class="post-count">445 posts</span>
+                        </div>
+                        <div class="category-stats">
+                            <span class="online-users">🟢 67 online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="forum-actions">
+                    <a href="#" class="btn btn-primary forum-btn">
+                        <i class="fas fa-sign-in-alt"></i> Entrar no Fórum
+                    </a>
+                    <a href="#" class="btn btn-secondary forum-btn">
+                        <i class="fas fa-user-plus"></i> Criar Conta
+                    </a>
+                </div>
+            </div>
+            
+            <div class="contact-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p>contato@nexorstudios.com</p>
+                        <a href="mailto:contato@nexorstudios.com" class="contact-link">Enviar Email</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3>Discord</h3>
+                        <p>Junte-se ao nosso servidor</p>
+                        <a href="#" class="contact-link">Entrar no Discord</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Horário</h3>
+                        <p>Segunda - Sexta: 9h às 18h</p>
+                        <p>Resposta em até 24h</p>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form class="formulario" id="contactForm">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                            <i class="fas fa-user form-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                            <i class="fas fa-envelope form-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="assunto">Assunto</label>
+                            <select id="assunto" name="assunto" required>
+                                <option value="">Selecione um assunto</option>
+                                <option value="parceria">Parceria</option>
+                                <option value="suporte">Suporte Técnico</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                            <i class="fas fa-tag form-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensagem">Mensagem</label>
+                            <textarea id="mensagem" name="mensagem" rows="5" placeholder="Conte-nos sobre sua ideia ou dúvida..." required></textarea>
+                            <i class="fas fa-comment form-icon"></i>
+                        </div>
+                        <button type="submit" class="btn btn-submit">
+                            <span class="btn-text">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Mensagem
+                            </span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Enviando...
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <div class="form-success" id="formSuccess" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Mensagem Enviada!</h3>
+                        <p>Obrigado pelo contato. Responderemos em breve!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>
-        <p>&copy; 2025 Starled Studios. Todos os direitos reservados.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo">NEXOR</span>
+                        <span class="logo-subtitle">STUDIOS</span>
+                    </div>
+                    <p class="footer-description">
+                        Criando o futuro dos jogos no Roblox com inovação, qualidade e paixão.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Jogos</h4>
+                    <ul>
+                        <li><a href="#">Exército Brasileiro</a></li>
+                        <li><a href="#">Battlefield Elite</a></li>
+                        <li><a href="#">Base Aérea Civil</a></li>
+                        <li><a href="#">Combat Zone</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="#sobre">Sobre Nós</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Reportar Bug</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NEXOR Studios. Todos os direitos reservados.</p>
+                <p>Feito com <i class="fas fa-heart"></i> para a comunidade Roblox</p>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/script.js"></script>
-    <script>
-        
-    </script>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 
