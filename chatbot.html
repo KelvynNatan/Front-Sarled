@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXOR Assistant - Chatbot IA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6);
+        }
+        
+        .chatbot-toggle.active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chatbot-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .chatbot-info h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .chatbot-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .chatbot-status {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-left: auto;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        
+        .message-content {
+            background: rgba(51, 65, 85, 0.5);
+            padding: 0.75rem;
+            border-radius: 1rem;
+            color: #e2e8f0;
+            max-width: 80%;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        
+        .message.bot .message-content {
+            border-bottom-left-radius: 0.25rem;
+        }
+        
+        .message.user .message-content {
+            border-bottom-right-radius: 0.25rem;
+        }
+        
+        .quick-actions {
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        .quick-action {
+            padding: 0.5rem 0.75rem;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 1rem;
+            color: #f59e0b;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-action:hover {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #f59e0b;
+        }
+        
+        .chatbot-input {
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid #334155;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .message-input {
+            flex: 1;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid #475569;
+            border-radius: 1.5rem;
+            padding: 0.75rem 1rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .message-input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+        
+        .message-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .send-button {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: 1rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typingDot 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingDot {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chatbot-container {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .chatbot-window {
+                width: calc(100vw - 20px);
+                height: 70vh;
+                bottom: 80px;
+                right: -10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot" id="toggleIcon"></i>
+        </button>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chatbot-info">
+                    <h3>NEXOR Assistant</h3>
+                    <p>Assistente Virtual</p>
+                </div>
+                <div class="chatbot-status">
+                    <div class="status-dot"></div>
+                    <span style="font-size: 0.8rem;">Online</span>
+                </div>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        Olá! 👋 Sou o NEXOR Assistant, seu assistente virtual. Estou aqui para ajudar você a navegar pelo site, encontrar informações sobre nossos jogos e responder suas dúvidas. Como posso ajudar?
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span>NEXOR Assistant está digitando</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="quick-action" onclick="sendQuickMessage('Como jogar?')">🎮 Como jogar?</div>
+                <div class="quick-action" onclick="sendQuickMessage('Suporte técnico')">🛠️ Suporte</div>
+                <div class="quick-action" onclick="sendQuickMessage('Eventos')">🏆 Eventos</div>
+                <div class="quick-action" onclick="sendQuickMessage('Fórum')">💬 Fórum</div>
+            </div>
+            
+            <div class="chatbot-input">
+                <div class="input-container">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Digite sua mensagem..." maxlength="500">
+                    <button class="send-button" id="sendButton" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        class NEXORChatbot {
+            constructor() {
+                this.isOpen = false;
+                this.responses = {
+                    'como jogar': 'Para começar a jogar, você pode baixar nossos jogos na seção de Downloads. Temos tutoriais completos para iniciantes! 🎮',
+                    'suporte': 'Para suporte técnico, visite nossa seção de Suporte ou acesse o fórum. Nossa equipe está sempre pronta para ajudar! 🛠️',
+                    'eventos': 'Confira nossa seção de Competições & Eventos no fórum para participar de torneios e ganhar prêmios incríveis! 🏆',
+                    'forum': 'Nosso fórum é o lugar perfeito para interagir com a comunidade, fazer perguntas e compartilhar experiências! 💬',
+                    'download': 'Você pode baixar nossos jogos na seção principal do site. Todos os downloads são gratuitos e seguros! ⬇️',
+                    'conta': 'Para criar uma conta, clique em "Criar Conta" no fórum. É rápido e gratuito! 👤',
+                    'requisitos': 'Os requisitos mínimos variam por jogo. Confira a seção de cada jogo para mais detalhes sobre compatibilidade. 💻',
+                    'comunidade': 'Nossa comunidade é ativa no fórum, Discord e redes sociais. Junte-se a nós! 🌟',
+                    'atualizações': 'Acompanhe as últimas atualizações na seção Desenvolvimento & Feedback do fórum! 🔄',
+                    'bug': 'Para reportar bugs, use a seção de Suporte Técnico no fórum. Inclua detalhes e screenshots se possível! 🐛'
+                };
+                
+                this.initializeEventListeners();
+            }
+            
+            initializeEventListeners() {
+                const toggle = document.getElementById('chatbotToggle');
+                const input = document.getElementById('messageInput');
+                const sendButton = document.getElementById('sendButton');
+                
+                toggle.addEventListener('click', () => this.toggleChatbot());
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                input.addEventListener('input', () => {
+                    sendButton.disabled = input.value.trim() === '';
+                });
+            }
+            
+            toggleChatbot() {
+                const window = document.getElementById('chatbotWindow');
+                const toggle = document.getElementById('chatbotToggle');
+                const icon = document.getElementById('toggleIcon');
+                
+                this.isOpen = !this.isOpen;
+                
+                if (this.isOpen) {
+                    window.classList.add('active');
+                    toggle.classList.add('active');
+                    icon.className = 'fas fa-times';
+                    document.getElementById('messageInput').focus();
+                } else {
+                    window.classList.remove('active');
+                    toggle.classList.remove('active');
+                    icon.className = 'fas fa-robot';
+                }
+            }
+            
+            sendMessage(message = null) {
+                const input = document.getElementById('messageInput');
+                const text = message || input.value.trim();
+                
+                if (!text) return;
+                
+                this.addMessage(text, 'user');
+                input.value = '';
+                document.getElementById('sendButton').disabled = true;
+                
+                this.showTypingIndicator();
+                
+                setTimeout(() => {
+                    this.hideTypingIndicator();
+                    const response = this.generateResponse(text);
+                    this.addMessage(response, 'bot');
+                }, 1000 + Math.random() * 1000);
+            }
+            
+            addMessage(text, sender) {
+                const messagesContainer = document.getElementById('chatbotMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+                
+                const content = document.createElement('div');
+                content.className = 'message-content';
+                content.textContent = text;
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(content);
+                
+                const typingIndicator = document.getElementById('typingIndicator');
+                messagesContainer.insertBefore(messageDiv, typingIndicator);
+                
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            showTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                indicator.style.display = 'flex';
+                
+                const messagesContainer = document.getElementById('chatbotMessages');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            hideTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                indicator.style.display = 'none';
+            }
+            
+            generateResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                // Busca por palavras-chave nas respostas
+                for (const [key, response] of Object.entries(this.responses)) {
+                    if (lowerMessage.includes(key)) {
+                        return response;
+                    }
+                }
+                
+                // Respostas baseadas em padrões
+                if (lowerMessage.includes('olá') || lowerMessage.includes('oi') || lowerMessage.includes('hello')) {
+                    return 'Olá! 👋 Como posso ajudar você hoje? Posso responder sobre nossos jogos, suporte, eventos e muito mais!';
+                }
+                
+                if (lowerMessage.includes('obrigado') || lowerMessage.includes('valeu')) {
+                    return 'De nada! 😊 Estou sempre aqui para ajudar. Se tiver mais dúvidas, é só perguntar!';
+                }
+                
+                if (lowerMessage.includes('tchau') || lowerMessage.includes('bye')) {
+                    return 'Até logo! 👋 Volte sempre que precisar de ajuda. Bons jogos! 🎮';
+                }
+                
+                if (lowerMessage.includes('?')) {
+                    return 'Essa é uma ótima pergunta! Para informações mais específicas, recomendo visitar nosso fórum ou seção de suporte. Posso ajudar com navegação no site, informações gerais sobre jogos, eventos e suporte. 🤔';
+                }
+                
+                // Resposta padrão
+                const defaultResponses = [
+                    'Interessante! Para mais informações detalhadas, confira nosso fórum ou seção de suporte. 🔍',
+                    'Posso ajudar você a navegar pelo site! Tente perguntar sobre jogos, eventos, suporte ou fórum. 🎯',
+                    'Não tenho certeza sobre isso, mas nossa comunidade no fórum pode ter a resposta! 💭',
+                    'Para informações específicas, recomendo visitar as seções relevantes do site ou contatar nosso suporte. 📞'
+                ];
+                
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+        }
+        
+        // Função global para ações rápidas
+        function sendQuickMessage(message) {
+            chatbot.sendMessage(message);
+        }
+        
+        // Inicializar chatbot
+        const chatbot = new NEXORChatbot();
+        
+        // Auto-abrir chatbot após 5 segundos (opcional)
+        setTimeout(() => {
+            if (!chatbot.isOpen) {
+                // chatbot.toggleChatbot(); // Descomente para auto-abrir
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

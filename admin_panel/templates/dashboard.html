@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NEXOR Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+    <div class="text-muted">
+        <i class="fas fa-clock me-1"></i>
+        <span id="current-time"></span>
+    </div>
+</div>
+
+<!-- Estatísticas Principais -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.total_users }}</div>
+                    <div class="stat-label">Total de Usuários</div>
+                </div>
+                <i class="fas fa-users fa-2x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.total_topics }}</div>
+                    <div class="stat-label">Tópicos Criados</div>
+                </div>
+                <i class="fas fa-comments fa-2x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.total_posts }}</div>
+                    <div class="stat-label">Posts Publicados</div>
+                </div>
+                <i class="fas fa-comment fa-2x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.online_users }}</div>
+                    <div class="stat-label">Usuários Online</div>
+                </div>
+                <i class="fas fa-circle fa-2x text-success opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alertas -->
+{% if stats.pending_contacts > 0 %}
+<div class="alert alert-warning" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    Você tem <strong>{{ stats.pending_contacts }}</strong> contato(s) pendente(s) para responder.
+    <a href="{{ url_for('contacts') }}" class="alert-link">Ver contatos</a>
+</div>
+{% endif %}
+
+<!-- Gráficos e Atividade -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>Atividade dos Últimos 7 Dias
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="activityChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clock me-2"></i>Atividade por Hora (Hoje)
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="hourlyChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Atividade Recente -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-comments me-2"></i>Tópicos Recentes
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if recent_topics %}
+                    <div class="list-group list-group-flush">
+                        {% for topic in recent_topics %}
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">{{ topic[1][:50] }}{% if topic[1]|length > 50 %}...{% endif %}</h6>
+                                    <small class="text-muted">por {{ topic[0] }}</small>
+                                </div>
+                                <small class="text-muted">{{ topic[2] }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center py-3">Nenhum tópico recente</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-comment me-2"></i>Posts Recentes
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if recent_posts %}
+                    <div class="list-group list-group-flush">
+                        {% for post in recent_posts %}
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <p class="mb-1">{{ post[1][:80] }}{% if post[1]|length > 80 %}...{% endif %}</p>
+                                    <small class="text-muted">por {{ post[0] }}</small>
+                                </div>
+                                <small class="text-muted">{{ post[2] }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center py-3">Nenhum post recente</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Atualizar horário
+function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleString('pt-BR');
+    document.getElementById('current-time').textContent = timeString;
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+
+// Carregar dados dos gráficos
+fetch('/api/stats')
+    .then(response => response.json())
+    .then(data => {
+        // Gráfico de atividade
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: data.user_registrations.map(item => item[0]),
+                datasets: [{
+                    label: 'Novos Usuários',
+                    data: data.user_registrations.map(item => item[1]),
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Gráfico por hora
+        const hourlyCtx = document.getElementById('hourlyChart').getContext('2d');
+        new Chart(hourlyCtx, {
+            type: 'bar',
+            data: {
+                labels: data.hourly_activity.map(item => item[0] + 'h'),
+                datasets: [{
+                    label: 'Acessos',
+                    data: data.hourly_activity.map(item => item[1]),
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: '#667eea',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao carregar dados dos gráficos:', error);
+    });
+</script>
+{% endblock %}

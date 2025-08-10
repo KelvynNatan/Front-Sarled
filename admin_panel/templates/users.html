@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários - NEXOR Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-users me-2"></i>Gerenciamento de Usuários</h1>
+    <div class="d-flex gap-2">
+        <div class="input-group" style="width: 300px;">
+            <input type="text" class="form-control" id="userSearch" placeholder="Buscar usuários...">
+            <button class="btn btn-outline-secondary" type="button" onclick="clearUserFilter()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary active" onclick="filterUsers('all')">Todos</button>
+            <button type="button" class="btn btn-outline-success" onclick="filterUsers('active')">Ativos</button>
+            <button type="button" class="btn btn-outline-danger" onclick="filterUsers('inactive')">Inativos</button>
+        </div>
+    </div>
+</div>
+
+{% if users %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-table me-2"></i>Lista de Usuários
+                    <span class="badge bg-primary ms-2">{{ users|length }} usuários</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Tópicos</th>
+                                <th>Posts</th>
+                                <th>Registrado em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr class="user-row" data-status="{{ 'active' if user[4] else 'inactive' }}">
+                                <td>
+                                    <span class="badge bg-secondary">#{{ user[0] }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle me-2">
+                                            {{ user[1][0].upper() }}
+                                        </div>
+                                        <div>
+                                            <strong>{{ user[1] }}</strong>
+                                            {% if user[5] > 10 %}
+                                                <span class="badge bg-warning ms-1" title="Usuário ativo">⭐</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="mailto:{{ user[2] }}" class="text-decoration-none">
+                                        {{ user[2] }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if user[4] %}
+                                        <span class="badge bg-success">Ativo</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Inativo</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ user[5] }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ user[6] }}</span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ user[3] }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button type="button" class="btn btn-outline-primary" 
+                                                onclick="viewUserDetails({{ user[0] }}, '{{ user[1] }}', '{{ user[2] }}', {{ user[5] }}, {{ user[6] }})" 
+                                                title="Ver detalhes">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        {% if user[4] %}
+                                            <button type="button" class="btn btn-outline-warning" 
+                                                    onclick="toggleUserStatus({{ user[0] }}, false)" 
+                                                    title="Desativar usuário">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-outline-success" 
+                                                    onclick="toggleUserStatus({{ user[0] }}, true)" 
+                                                    title="Ativar usuário">
+                                                <i class="fas fa-user-check"></i>
+                                            </button>
+                                        {% endif %}
+                                        <button type="button" class="btn btn-outline-danger" 
+                                                onclick="confirmDeleteUser({{ user[0] }}, '{{ user[1] }}')" 
+                                                title="Excluir usuário">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estatísticas dos Usuários -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-user-plus fa-2x text-success mb-2"></i>
+                <h5>Novos Usuários</h5>
+                <p class="text-muted">Esta semana</p>
+                <h3 class="text-success">{{ users|selectattr('3')|list|length if users else 0 }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-comments fa-2x text-primary mb-2"></i>
+                <h5>Mais Ativo</h5>
+                <p class="text-muted">Por posts</p>
+                {% set most_active = users|sort(attribute=6, reverse=true)|first if users else none %}
+                {% if most_active %}
+                    <h6 class="text-primary">{{ most_active[1] }}</h6>
+                    <small class="text-muted">{{ most_active[6] }} posts</small>
+                {% else %}
+                    <h6 class="text-muted">N/A</h6>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-percentage fa-2x text-warning mb-2"></i>
+                <h5>Taxa de Atividade</h5>
+                <p class="text-muted">Usuários ativos</p>
+                {% set active_count = users|selectattr('4')|list|length if users else 0 %}
+                {% set total_count = users|length if users else 1 %}
+                <h3 class="text-warning">{{ ((active_count / total_count) * 100)|round|int }}%</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-users fa-4x text-muted mb-3"></i>
+    <h3 class="text-muted">Nenhum usuário encontrado</h3>
+    <p class="text-muted">Quando usuários se registrarem no fórum, eles aparecerão aqui.</p>
+</div>
+{% endif %}
+
+<!-- Modal de Detalhes do Usuário -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-user me-2"></i>Detalhes do Usuário
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="userDetailsContent">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir o usuário <strong id="deleteUserName"></strong>?</p>
+                <div class="alert alert-danger">
+                    <i class="fas fa-warning me-2"></i>
+                    <strong>Atenção:</strong> Esta ação não pode ser desfeita. Todos os tópicos e posts do usuário também serão removidos.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash me-1"></i>Excluir Usuário
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentUserId = null;
+
+function viewUserDetails(userId, username, email, topicCount, postCount) {
+    const content = `
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="avatar-circle-large mb-3">
+                            ${username[0].toUpperCase()}
+                        </div>
+                        <h5>${username}</h5>
+                        <p class="text-muted">${email}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Estatísticas</h6>
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h4 class="text-primary">${topicCount}</h4>
+                                    <small class="text-muted">Tópicos</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h4 class="text-success">${postCount}</h4>
+                                    <small class="text-muted">Posts</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h6>Ações Rápidas</h6>
+            <div class="btn-group w-100" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="sendMessageToUser('${email}')">
+                    <i class="fas fa-envelope me-1"></i>Enviar Email
+                </button>
+                <button type="button" class="btn btn-outline-info" onclick="viewUserActivity(${userId})">
+                    <i class="fas fa-chart-line me-1"></i>Ver Atividade
+                </button>
+                <button type="button" class="btn btn-outline-warning" onclick="resetUserPassword(${userId})">
+                    <i class="fas fa-key me-1"></i>Resetar Senha
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('userDetailsContent').innerHTML = content;
+    const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+    modal.show();
+}
+
+function filterUsers(status) {
+    const rows = document.querySelectorAll('.user-row');
+    const buttons = document.querySelectorAll('.btn-group .btn');
+    
+    // Atualizar botões
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filtrar linhas
+    rows.forEach(row => {
+        if (status === 'all' || row.dataset.status === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function toggleUserStatus(userId, activate) {
+    // Implementar chamada AJAX para ativar/desativar usuário
+    console.log(`${activate ? 'Ativando' : 'Desativando'} usuário ${userId}`);
+    
+    // Simular sucesso e atualizar interface
+    setTimeout(() => {
+        location.reload();
+    }, 500);
+}
+
+function confirmDeleteUser(userId, username) {
+    currentUserId = userId;
+    document.getElementById('deleteUserName').textContent = username;
+    
+    const modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+    modal.show();
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if (currentUserId) {
+        // Implementar chamada AJAX para excluir usuário
+        console.log(`Excluindo usuário ${currentUserId}`);
+        
+        // Simular sucesso
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    }
+});
+
+function sendMessageToUser(email) {
+    window.open(`mailto:${email}`, '_blank');
+}
+
+function viewUserActivity(userId) {
+    // Implementar visualização de atividade do usuário
+    console.log(`Visualizando atividade do usuário ${userId}`);
+}
+
+function resetUserPassword(userId) {
+    if (confirm('Tem certeza que deseja resetar a senha deste usuário?')) {
+        // Implementar reset de senha
+        console.log(`Resetando senha do usuário ${userId}`);
+    }
+}
+
+// Filtro de busca
+document.getElementById('userSearch').addEventListener('input', function() {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('.user-row');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+    });
+});
+
+function clearUserFilter() {
+    document.getElementById('userSearch').value = '';
+    document.querySelectorAll('.user-row').forEach(row => {
+        row.style.display = '';
+    });
+}
+
+// Adicionar estilos CSS
+const style = document.createElement('style');
+style.textContent = `
+    .avatar-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .avatar-circle-large {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 32px;
+        margin: 0 auto;
+    }
+    
+    .user-row:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+    
+    .stat-item {
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn-group .btn.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-color: #667eea;
+        color: white;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

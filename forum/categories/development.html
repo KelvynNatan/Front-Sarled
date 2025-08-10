@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento & Feedback - Fórum NEXOR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        .breadcrumb {
+            padding: 1rem 0;
+            color: #94a3b8;
+        }
+        
+        .breadcrumb a {
+            color: #f59e0b;
+            text-decoration: none;
+        }
+        
+        .category-header {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .category-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+        }
+        
+        .development-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dev-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .dev-card:hover {
+            transform: translateY(-5px);
+            border-color: #8b5cf6;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+        
+        .dev-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .dev-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-in-development {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .status-testing {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .status-released {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .status-planned {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+        }
+        
+        .dev-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dev-description {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .dev-progress {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .progress-bar {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.5rem;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            transition: width 0.3s ease;
+        }
+        
+        .dev-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #475569;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .roadmap-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            border: 1px solid #334155;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .roadmap-header {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .roadmap-content {
+            padding: 1.5rem;
+        }
+        
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .roadmap-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+        
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: -0.5rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 50%;
+            border: 3px solid #1e293b;
+        }
+        
+        .roadmap-date {
+            font-size: 0.8rem;
+            color: #8b5cf6;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .roadmap-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .roadmap-description {
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        
+        .feedback-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            border: 1px solid #334155;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .feedback-header {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .feedback-list {
+            padding: 1.5rem;
+        }
+        
+        .feedback-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .feedback-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+        }
+        
+        .feedback-votes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 1rem;
+            min-width: 60px;
+        }
+        
+        .vote-btn {
+            background: transparent;
+            border: 1px solid #475569;
+            color: #94a3b8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .vote-btn:hover {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+        
+        .vote-count {
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: #8b5cf6;
+        }
+        
+        .feedback-content {
+            flex: 1;
+        }
+        
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feedback-title a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+        
+        .feedback-title a:hover {
+            color: #8b5cf6;
+        }
+        
+        .feedback-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feedback-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 0.25rem 0.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .topics-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            border: 1px solid #334155;
+            overflow: hidden;
+        }
+        
+        .topics-header {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topics-list {
+            padding: 1.5rem;
+        }
+        
+        .topic-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+        }
+        
+        .topic-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .topic-content {
+            flex: 1;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .topic-title a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+        
+        .topic-title a:hover {
+            color: #8b5cf6;
+        }
+        
+        .topic-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        .topic-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .category-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .development-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .topic-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .topic-stats {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+            
+            .feedback-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../../index.html" class="logo">
+                    <i class="fas fa-code"></i> NEXOR Studios
+                </a>
+                
+                <nav class="nav-links">
+                    <a href="../../index.html" class="nav-link">
+                        <i class="fas fa-home"></i> Início
+                    </a>
+                    <a href="../index.php" class="nav-link">
+                        <i class="fas fa-comments"></i> Fórum
+                    </a>
+                    <a href="../admin.php" class="nav-link">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="breadcrumb">
+            <a href="../index.php">Fórum</a> > <span>Desenvolvimento & Feedback</span>
+        </div>
+        
+        <div class="category-header">
+            <div class="category-title">
+                <div class="category-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="category-info">
+                    <h1>Desenvolvimento & Feedback</h1>
+                    <p>Acompanhe o desenvolvimento dos jogos NEXOR, compartilhe suas ideias e ajude a moldar o futuro dos nossos projetos com seu feedback valioso.</p>
+                </div>
+            </div>
+            
+            <div class="category-stats">
+                <div class="stat">
+                    <i class="fas fa-code-branch"></i>
+                    <span>8 projetos ativos</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>456 sugestões</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-chart-line"></i>
+                    <span>89% implementadas</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-users"></i>
+                    <span>23 desenvolvedores</span>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-rocket"></i> Projetos em Desenvolvimento
+        </h2>
+        
+        <div class="development-grid">
+            <div class="dev-card">
+                <div class="dev-header">
+                    <div class="dev-status status-in-development">
+                        🚧 EM DESENVOLVIMENTO
+                    </div>
+                </div>
+                <div class="dev-title">NEXOR Battle Royale 2.0</div>
+                <div class="dev-description">
+                    Nova versão do nosso Battle Royale com mapa expandido, novas armas, sistema de clãs e modo ranked competitivo.
+                </div>
+                <div class="dev-progress">
+                    <div class="progress-label">
+                        <span>Progresso</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="dev-meta">
+                    <span><i class="fas fa-calendar"></i> Lançamento: Q2 2025</span>
+                    <span><i class="fas fa-users"></i> 12 devs</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> Acompanhar Desenvolvimento
+                </a>
+            </div>
+            
+            <div class="dev-card">
+                <div class="dev-header">
+                    <div class="dev-status status-testing">
+                        🧪 EM TESTE
+                    </div>
+                </div>
+                <div class="dev-title">Sistema de Guilds</div>
+                <div class="dev-description">
+                    Sistema completo de guilds com rankings, guerras entre guilds, missões cooperativas e recompensas exclusivas.
+                </div>
+                <div class="dev-progress">
+                    <div class="progress-label">
+                        <span>Progresso</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+                <div class="dev-meta">
+                    <span><i class="fas fa-calendar"></i> Beta: Próxima semana</span>
+                    <span><i class="fas fa-users"></i> 8 devs</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-flask"></i> Participar do Beta
+                </a>
+            </div>
+            
+            <div class="dev-card">
+                <div class="dev-header">
+                    <div class="dev-status status-planned">
+                        📋 PLANEJADO
+                    </div>
+                </div>
+                <div class="dev-title">NEXOR Mobile</div>
+                <div class="dev-description">
+                    Versão mobile dos nossos jogos principais com controles otimizados, gráficos adaptados e cross-play com PC.
+                </div>
+                <div class="dev-progress">
+                    <div class="progress-label">
+                        <span>Progresso</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                </div>
+                <div class="dev-meta">
+                    <span><i class="fas fa-calendar"></i> Lançamento: Q4 2025</span>
+                    <span><i class="fas fa-users"></i> 15 devs</span>
+                </div>
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-lightbulb"></i> Dar Sugestões
+                </a>
+            </div>
+            
+            <div class="dev-card">
+                <div class="dev-header">
+                    <div class="dev-status status-released">
+                        ✅ LANÇADO
+                    </div>
+                </div>
+                <div class="dev-title">Sistema Anti-Cheat 3.0</div>
+                <div class="dev-description">
+                    Nova versão do nosso sistema anti-cheat com detecção avançada de IA e proteção em tempo real contra hacks.
+                </div>
+                <div class="dev-progress">
+                    <div class="progress-label">
+                        <span>Progresso</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="dev-meta">
+                    <span><i class="fas fa-calendar"></i> Lançado: Semana passada</span>
+                    <span><i class="fas fa-shield-alt"></i> Ativo</span>
+                </div>
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-info-circle"></i> Ver Detalhes
+                </a>
+            </div>
+        </div>
+        
+        <div class="roadmap-section">
+            <div class="roadmap-header">
+                <h2><i class="fas fa-map"></i> Roadmap 2025</h2>
+            </div>
+            <div class="roadmap-content">
+                <div class="roadmap-timeline">
+                    <div class="roadmap-item">
+                        <div class="roadmap-date">Q1 2025</div>
+                        <div class="roadmap-title">Sistema de Guilds & Clãs</div>
+                        <div class="roadmap-description">
+                            Implementação completa do sistema de guilds com rankings, guerras e missões cooperativas.
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-item">
+                        <div class="roadmap-date">Q2 2025</div>
+                        <div class="roadmap-title">NEXOR Battle Royale 2.0</div>
+                        <div class="roadmap-description">
+                            Lançamento da nova versão com mapa expandido, novas mecânicas e modo ranked.
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-item">
+                        <div class="roadmap-date">Q3 2025</div>
+                        <div class="roadmap-title">Sistema de Temporadas</div>
+                        <div class="roadmap-description">
+                            Introdução de temporadas com battle pass, recompensas exclusivas e eventos temáticos.
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-item">
+                        <div class="roadmap-date">Q4 2025</div>
+                        <div class="roadmap-title">NEXOR Mobile</div>
+                        <div class="roadmap-description">
+                            Lançamento da versão mobile com cross-play e todas as funcionalidades principais.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feedback-section">
+            <div class="feedback-header">
+                <h2>Sugestões da Comunidade</h2>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nova Sugestão
+                </a>
+            </div>
+            
+            <div class="feedback-list">
+                <div class="feedback-item">
+                    <div class="feedback-votes">
+                        <button class="vote-btn"><i class="fas fa-chevron-up"></i></button>
+                        <div class="vote-count">247</div>
+                        <button class="vote-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-title">
+                            <a href="#">Sistema de replay para análise de partidas</a>
+                        </div>
+                        <div class="feedback-meta">
+                            Por <strong>ProGamer123</strong> • há 2 dias • <span style="color: #22c55e;">EM DESENVOLVIMENTO</span>
+                        </div>
+                        <div class="feedback-tags">
+                            <span class="tag">GAMEPLAY</span>
+                            <span class="tag">ANÁLISE</span>
+                            <span class="tag">COMPETITIVO</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-item">
+                    <div class="feedback-votes">
+                        <button class="vote-btn"><i class="fas fa-chevron-up"></i></button>
+                        <div class="vote-count">189</div>
+                        <button class="vote-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-title">
+                            <a href="#">Modo espectador com câmera livre</a>
+                        </div>
+                        <div class="feedback-meta">
+                            Por <strong>StreamerPro</strong> • há 1 semana • <span style="color: #f59e0b;">EM ANÁLISE</span>
+                        </div>
+                        <div class="feedback-tags">
+                            <span class="tag">ESPECTADOR</span>
+                            <span class="tag">STREAMING</span>
+                            <span class="tag">CÂMERA</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-item">
+                    <div class="feedback-votes">
+                        <button class="vote-btn"><i class="fas fa-chevron-up"></i></button>
+                        <div class="vote-count">156</div>
+                        <button class="vote-btn"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-title">
+                            <a href="#">Customização avançada de personagens</a>
+                        </div>
+                        <div class="feedback-meta">
+                            Por <strong>DesignFan</strong> • há 3 dias • <span style="color: #8b5cf6;">PLANEJADO</span>
+                        </div>
+                        <div class="feedback-tags">
+                            <span class="tag">CUSTOMIZAÇÃO</span>
+                            <span class="tag">PERSONAGEM</span>
+                            <span class="tag">VISUAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="topics-section">
+            <div class="topics-header">
+                <h2>Discussões de Desenvolvimento</h2>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Novo Tópico
+                </a>
+            </div>
+            
+            <div class="topics-list">
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">🚀 Novidades do Battle Royale 2.0 - Preview Exclusivo</a>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>DevTeamNEXOR</strong> • há 2 horas
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 89</span>
+                        <span><i class="fas fa-eye"></i> 1,234</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Beta do Sistema de Guilds - Feedback e Bugs</a>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>BetaTester</strong> • há 1 dia
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 156</span>
+                        <span><i class="fas fa-eye"></i> 892</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Ideias para o NEXOR Mobile - O que vocês querem ver?</a>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>CommunityManager</strong> • há 3 dias
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 234</span>
+                        <span><i class="fas fa-eye"></i> 1,567</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Estatísticas de balanceamento - Patch 2.1.4</a>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>BalanceTeam</strong> • há 1 semana
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 67</span>
+                        <span><i class="fas fa-eye"></i> 445</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

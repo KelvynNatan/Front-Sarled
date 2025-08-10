@@ -1,0 +1,50 @@
+2025-08-08 01:59:45,273 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.15.14:5000
+2025-08-08 01:59:45,274 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-08 01:59:45,293 - INFO -  * Restarting with stat
+2025-08-08 01:59:45,794 - WARNING -  * Debugger is active!
+2025-08-08 01:59:45,801 - INFO -  * Debugger PIN: 161-698-802
+2025-08-08 01:59:50,460 - INFO - 127.0.0.1 - - [08/Aug/2025 01:59:50] "[32mGET /?ide_webview_request_time=1754629190144 HTTP/1.1[0m" 302 -
+2025-08-08 01:59:50,730 - INFO - 127.0.0.1 - - [08/Aug/2025 01:59:50] "GET /login HTTP/1.1" 200 -
+2025-08-08 01:59:50,962 - INFO - 127.0.0.1 - - [08/Aug/2025 01:59:50] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 02:00:20,293 - WARNING - Tentativa de login inválida: x7damiraxitada
+2025-08-08 02:00:20,294 - INFO - 127.0.0.1 - - [08/Aug/2025 02:00:20] "POST /login HTTP/1.1" 200 -
+2025-08-08 02:00:20,554 - INFO - 127.0.0.1 - - [08/Aug/2025 02:00:20] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:10,159 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.15.14:5000
+2025-08-08 03:29:10,161 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-08 03:29:10,164 - INFO -  * Restarting with stat
+2025-08-08 03:29:10,617 - WARNING -  * Debugger is active!
+2025-08-08 03:29:10,624 - INFO -  * Debugger PIN: 161-698-802
+2025-08-08 03:29:13,589 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:13] "[32mGET /?ide_webview_request_time=1754634553268 HTTP/1.1[0m" 302 -
+2025-08-08 03:29:13,857 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:13] "GET /login HTTP/1.1" 200 -
+2025-08-08 03:29:13,943 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:13] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:26,978 - INFO - Login realizado por admin
+2025-08-08 03:29:26,978 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:26] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-08-08 03:29:27,224 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:27,225 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:27] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:27,287 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:27] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:28,880 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:28,880 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:28] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:29,226 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:29] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:44,100 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:44,100 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:44] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:44,429 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:44] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:45,314 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:45] "GET /login HTTP/1.1" 200 -
+2025-08-08 03:29:45,660 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:45] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:48,361 - INFO - Login realizado por admin
+2025-08-08 03:29:48,361 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:48] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-08-08 03:29:48,674 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:48,674 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:48] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:48,942 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:48] "[33mGET /@vite/client HTTP/1.1[0m" 404 -
+2025-08-08 03:29:58,157 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:58,158 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:58] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:59,437 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:59,438 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:59] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:29:59,768 - ERROR - Erro no dashboard: no such table: users
+2025-08-08 03:29:59,769 - INFO - 127.0.0.1 - - [08/Aug/2025 03:29:59] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-08-08 03:30:00,028 - INFO - 127.0.0.1 - - [08/Aug/2025 03:30:00] "[33mGET /@vite/client HTTP/1.1[0m" 404 -

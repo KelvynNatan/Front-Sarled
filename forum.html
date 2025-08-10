@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum NEXOR - Comunidade de Jogadores</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .forum-hero {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 100px 0 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .forum-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23333" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .forum-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .forum-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .forum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 75, 43, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .forum-categories {
+            padding: 50px 0;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .category-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .category-header {
+            background: var(--gradient-primary);
+            padding: 2rem;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-description {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .category-content {
+            padding: 2rem;
+        }
+        
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .recent-topics {
+            margin-top: 1.5rem;
+        }
+        
+        .topic-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-item:hover {
+            background: var(--border-color);
+            transform: translateX(5px);
+        }
+        
+        .topic-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .topic-info {
+            flex: 1;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        
+        .topic-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .enter-forum-btn {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .enter-forum-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
+        }
+        
+        .online-users {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            width: 250px;
+            z-index: 100;
+        }
+        
+        .online-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .online-count {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .user-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .user-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+        }
+        
+        .user-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .forum-title {
+                font-size: 2.5rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .online-users {
+                display: none;
+            }
+            
+            .forum-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="logo">NEXOR</span>
+                <span class="logo-subtitle">FÓRUM</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Início</a>
+                <a href="#categorias" class="nav-link"><i class="fas fa-list"></i> Categorias</a>
+                <a href="#regras" class="nav-link"><i class="fas fa-gavel"></i> Regras</a>
+                <a href="#contato" class="nav-link"><i class="fas fa-envelope"></i> Contato</a>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="forum/index.php" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="forum-hero">
+        <div class="container">
+            <h1 class="forum-title" data-aos="fade-up">FÓRUM NEXOR</h1>
+            <p class="forum-subtitle" data-aos="fade-up" data-aos-delay="200">
+                Conecte-se com milhares de jogadores, compartilhe estratégias e participe da nossa comunidade
+            </p>
+            
+            <div class="forum-stats" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-card">
+                    <div class="stat-number">15,847</div>
+                    <div class="stat-label">Membros Ativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,341</div>
+                    <div class="stat-label">Tópicos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">48,592</div>
+                    <div class="stat-label">Mensagens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">892</div>
+                    <div class="stat-label">Online Agora</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="forum-categories" id="categorias">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Categorias do Fórum</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+                Explore nossas diferentes seções e encontre discussões sobre seus tópicos favoritos
+            </p>
+            
+            <div class="categories-grid">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="category-name">Discussões Gerais</h3>
+                        <p class="category-description">Converse sobre qualquer assunto relacionado aos nossos jogos</p>
+                    </div>
+                    <div class="category-content">
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">1,234</div>
+                                <div class="stat-text">Tópicos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">15,678</div>
+                                <div class="stat-text">Posts</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">234</div>
+                                <div class="stat-text">Online</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-topics">
+                            <h4>Tópicos Recentes:</h4>
+                            <div class="topic-item">
+                                <div class="topic-avatar">JG</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Novas estratégias para iniciantes</div>
+                                    <div class="topic-meta">por JoaoGamer • 2 horas atrás</div>
+                                </div>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-avatar">MP</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Dicas para melhorar no PvP</div>
+                                    <div class="topic-meta">por MariaPro • 5 horas atrás</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="forum/categories/general.html" class="enter-forum-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            Entrar na Categoria
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 class="category-name">Competições & Eventos</h3>
+                        <p class="category-description">Participe de torneios e eventos especiais</p>
+                    </div>
+                    <div class="category-content">
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">89</div>
+                                <div class="stat-text">Eventos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">2,456</div>
+                                <div class="stat-text">Participantes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">156</div>
+                                <div class="stat-text">Online</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-topics">
+                            <h4>Eventos Ativos:</h4>
+                            <div class="topic-item">
+                                <div class="topic-avatar">🏆</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Torneio de Verão 2025</div>
+                                    <div class="topic-meta">Termina em 3 dias</div>
+                                </div>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-avatar">🎮</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Competição de Builds</div>
+                                    <div class="topic-meta">Inscrições abertas</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="forum/categories/competitions.html" class="enter-forum-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            Ver Competições
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="category-name">Suporte Técnico</h3>
+                        <p class="category-description">Obtenha ajuda com problemas técnicos</p>
+                    </div>
+                    <div class="category-content">
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">456</div>
+                                <div class="stat-text">Tickets</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-text">Resolvidos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">89</div>
+                                <div class="stat-text">Online</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-topics">
+                            <h4>Problemas Recentes:</h4>
+                            <div class="topic-item">
+                                <div class="topic-avatar">❓</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Erro de conexão no servidor</div>
+                                    <div class="topic-meta">Resolvido • 1 hora atrás</div>
+                                </div>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-avatar">🔧</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Como resetar configurações</div>
+                                    <div class="topic-meta">FAQ • Sempre útil</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="forum/categories/support.html" class="enter-forum-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            Obter Suporte
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="category-name">Desenvolvimento & Feedback</h3>
+                        <p class="category-description">Compartilhe suas ideias para melhorar nossos jogos</p>
+                    </div>
+                    <div class="category-content">
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">234</div>
+                                <div class="stat-text">Sugestões</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">45</div>
+                                <div class="stat-text">Implementadas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">67</div>
+                                <div class="stat-text">Online</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-topics">
+                            <h4>Ideias Recentes:</h4>
+                            <div class="topic-item">
+                                <div class="topic-avatar">💡</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Nova mecânica de crafting</div>
+                                    <div class="topic-meta">Em análise • 6 horas atrás</div>
+                                </div>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-avatar">🎨</div>
+                                <div class="topic-info">
+                                    <div class="topic-title">Melhorias na interface</div>
+                                    <div class="topic-meta">Aprovado • 1 dia atrás</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="forum/categories/development.html" class="enter-forum-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            Dar Feedback
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Online Users Sidebar -->
+    <div class="online-users" data-aos="fade-left">
+        <div class="online-title">
+            <i class="fas fa-users"></i>
+            <span class="online-count">892</span> Online
+        </div>
+        <div class="user-list">
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">AdminNEXOR</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">JoaoGamer123</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">MariaPro</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">PedroBuilder</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">AnaStrategy</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">CarlosSpeed</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">LuciaMaster</div>
+            </div>
+            <div class="user-item">
+                <div class="user-status"></div>
+                <div class="user-name">RafaelPvP</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo">NEXOR</span>
+                        <span class="logo-subtitle">FÓRUM</span>
+                    </div>
+                    <p>A maior comunidade de jogadores Roblox do Brasil. Conecte-se, aprenda e divirta-se!</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Página Inicial</a></li>
+                        <li><a href="#categorias">Categorias</a></li>
+                        <li><a href="forum/index.php">Entrar no Fórum</a></li>
+                        <li><a href="admin_panel/">Painel Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Comunidade</h3>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Regras do Fórum</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Reportar Bug</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 NEXOR Studios. Todos os direitos reservados.</p>
+                <p>Fórum oficial da comunidade NEXOR</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        
+        // Update online users count animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 20);
+        }
+        
+        // Animate stats on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const target = parseInt(stat.textContent.replace(/,/g, ''));
+                        animateCounter(stat, target);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        
+        const statsSection = document.querySelector('.forum-stats');
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+    </script>
+</body>
+
+</html>

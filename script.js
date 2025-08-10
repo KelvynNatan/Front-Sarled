@@ -3,7 +3,7 @@ let currentSlide = 0;
 let isLoading = true;
 let currentFilter = 'all';
 let animationObserver;
-let backToTopButton;
+
 let themeToggle;
 let mobileMenuToggle;
 let navMenu;
@@ -715,39 +715,7 @@ class FormManager {
     }
 }
 
-// ===== BACK TO TOP BUTTON =====
-class BackToTopManager {
-    constructor() {
-        this.button = document.querySelector('.back-to-top');
-        this.init();
-    }
 
-    init() {
-        if (!this.button) return;
-        
-        this.setupScrollListener();
-        this.setupClickListener();
-    }
-
-    setupScrollListener() {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                this.button.classList.add('visible');
-            } else {
-                this.button.classList.remove('visible');
-            }
-        });
-    }
-
-    setupClickListener() {
-        this.button.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-}
 
 // ===== SCROLL ANIMATIONS =====
 class ScrollAnimations {
@@ -1007,7 +975,7 @@ class App {
         new PortfolioManager();
         new RatingSystem();
         new FormManager();
-        new BackToTopManager();
+
         new ScrollAnimations();
         new GameInteractions();
         new PerformanceOptimizer();

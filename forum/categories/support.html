@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Técnico - Fórum NEXOR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        .breadcrumb {
+            padding: 1rem 0;
+            color: #94a3b8;
+        }
+        
+        .breadcrumb a {
+            color: #f59e0b;
+            text-decoration: none;
+        }
+        
+        .category-header {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .category-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+        }
+        
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .support-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .support-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .support-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .support-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .support-description {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .support-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #475569;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .faq-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            border: 1px solid #334155;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .faq-header {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .faq-content {
+            padding: 1.5rem;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .faq-question:hover {
+            color: #3b82f6;
+        }
+        
+        .faq-answer {
+            color: #94a3b8;
+            line-height: 1.5;
+            padding-left: 1.5rem;
+        }
+        
+        .topics-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            border: 1px solid #334155;
+            overflow: hidden;
+        }
+        
+        .topics-header {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topics-list {
+            padding: 1.5rem;
+        }
+        
+        .topic-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+        }
+        
+        .topic-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .topic-content {
+            flex: 1;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .topic-title a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+        
+        .topic-title a:hover {
+            color: #3b82f6;
+        }
+        
+        .topic-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        .topic-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .priority-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .priority-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .priority-low {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-open {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .status-solved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        @media (max-width: 768px) {
+            .category-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .topic-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .topic-stats {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../../index.html" class="logo">
+                    <i class="fas fa-headset"></i> NEXOR Studios
+                </a>
+                
+                <nav class="nav-links">
+                    <a href="../../index.html" class="nav-link">
+                        <i class="fas fa-home"></i> Início
+                    </a>
+                    <a href="../index.php" class="nav-link">
+                        <i class="fas fa-comments"></i> Fórum
+                    </a>
+                    <a href="../admin.php" class="nav-link">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="breadcrumb">
+            <a href="../index.php">Fórum</a> > <span>Suporte Técnico</span>
+        </div>
+        
+        <div class="category-header">
+            <div class="category-title">
+                <div class="category-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="category-info">
+                    <h1>Suporte Técnico</h1>
+                    <p>Precisa de ajuda? Nossa equipe de suporte está aqui para resolver seus problemas técnicos, bugs e dúvidas sobre os jogos NEXOR.</p>
+                </div>
+            </div>
+            
+            <div class="category-stats">
+                <div class="stat">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>234 tickets abertos</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-check-circle"></i>
+                    <span>1,892 resolvidos</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span>Tempo médio: 2h</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-users"></i>
+                    <span>12 técnicos online</span>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-tools"></i> Categorias de Suporte
+        </h2>
+        
+        <div class="support-grid">
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <div class="support-title">Bugs & Problemas</div>
+                </div>
+                <div class="support-description">
+                    Reporte bugs, glitches e problemas técnicos encontrados nos jogos. Nossa equipe investigará e corrigirá rapidamente.
+                </div>
+                <div class="support-stats">
+                    <span>89 tickets abertos</span>
+                    <span>Prioridade: Alta</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Reportar Bug
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="support-title">Instalação & Download</div>
+                </div>
+                <div class="support-description">
+                    Problemas com download, instalação ou atualização dos jogos? Encontre soluções e guias passo a passo aqui.
+                </div>
+                <div class="support-stats">
+                    <span>45 tickets abertos</span>
+                    <span>Prioridade: Média</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-question-circle"></i> Pedir Ajuda
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="support-title">Conta & Perfil</div>
+                </div>
+                <div class="support-description">
+                    Problemas com login, recuperação de senha, configurações de conta ou perfil de jogador.
+                </div>
+                <div class="support-stats">
+                    <span>67 tickets abertos</span>
+                    <span>Prioridade: Média</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-user-shield"></i> Suporte de Conta
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="support-title">Gameplay & Mecânicas</div>
+                </div>
+                <div class="support-description">
+                    Dúvidas sobre mecânicas do jogo, controles, configurações de gameplay e otimização de performance.
+                </div>
+                <div class="support-stats">
+                    <span>33 tickets abertos</span>
+                    <span>Prioridade: Baixa</span>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-question"></i> Fazer Pergunta
+                </a>
+            </div>
+        </div>
+        
+        <div class="faq-section">
+            <div class="faq-header">
+                <h2><i class="fas fa-question-circle"></i> Perguntas Frequentes</h2>
+            </div>
+            <div class="faq-content">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Como posso reportar um bug no jogo?
+                    </div>
+                    <div class="faq-answer">
+                        Para reportar um bug, clique em "Reportar Bug" na categoria correspondente, descreva o problema detalhadamente, inclua screenshots se possível e nossa equipe investigará em até 24 horas.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        O jogo não está iniciando, o que fazer?
+                    </div>
+                    <div class="faq-answer">
+                        Primeiro, verifique se seu sistema atende aos requisitos mínimos. Tente executar como administrador, atualize seus drivers gráficos e verifique a integridade dos arquivos do jogo.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Como recuperar minha senha?
+                    </div>
+                    <div class="faq-answer">
+                        Clique em "Esqueci minha senha" na tela de login, digite seu email cadastrado e siga as instruções enviadas para sua caixa de entrada.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Qual o tempo médio de resposta do suporte?
+                    </div>
+                    <div class="faq-answer">
+                        Nosso tempo médio de resposta é de 2 horas para tickets de alta prioridade e até 24 horas para demais categorias. Tickets críticos são priorizados.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="topics-section">
+            <div class="topics-header">
+                <h2>Tickets de Suporte Recentes</h2>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Abrir Ticket
+                </a>
+            </div>
+            
+            <div class="topics-list">
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Crash ao entrar no servidor principal</a>
+                            <span class="priority-badge priority-high">ALTA</span>
+                            <span class="status-badge status-open">ABERTO</span>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>PlayerX123</strong> • há 15 minutos
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 3</span>
+                        <span><i class="fas fa-eye"></i> 12</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Erro na instalação da atualização 2.1.5</a>
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                            <span class="status-badge status-pending">PENDENTE</span>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>GamerPro</strong> • há 1 hora
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 7</span>
+                        <span><i class="fas fa-eye"></i> 34</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Problema com sincronização de save resolvido</a>
+                            <span class="priority-badge priority-low">BAIXA</span>
+                            <span class="status-badge status-solved">RESOLVIDO</span>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>TechUser</strong> • há 2 horas
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 12</span>
+                        <span><i class="fas fa-eye"></i> 89</span>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            <a href="#">Não consigo alterar configurações de perfil</a>
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                            <span class="status-badge status-open">ABERTO</span>
+                        </div>
+                        <div class="topic-meta">
+                            Por <strong>NewPlayer</strong> • há 3 horas
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span><i class="fas fa-reply"></i> 5</span>
+                        <span><i class="fas fa-eye"></i> 23</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

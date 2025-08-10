@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% block title %}Logs & Analytics - NEXOR Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-chart-line me-2"></i>Logs & Analytics</h1>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-outline-primary active" onclick="showTab('overview')">Visão Geral</button>
+        <button type="button" class="btn btn-outline-primary" onclick="showTab('logs')">Logs Detalhados</button>
+        <button type="button" class="btn btn-outline-primary" onclick="showTab('analytics')">Analytics</button>
+    </div>
+</div>
+
+<!-- Tab: Visão Geral -->
+<div id="overview-tab" class="tab-content">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-number">{{ today_visits }}</div>
+                        <div class="stat-label">Visitas Hoje</div>
+                    </div>
+                    <i class="fas fa-eye fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-number">{{ unique_visitors_today }}</div>
+                        <div class="stat-label">Visitantes Únicos</div>
+                    </div>
+                    <i class="fas fa-users fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-number">{{ popular_pages|length }}</div>
+                        <div class="stat-label">Páginas Ativas</div>
+                    </div>
+                    <i class="fas fa-file-alt fa-2x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Páginas Mais Visitadas (Últimos 7 dias)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if popular_pages %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Página</th>
+                                        <th>Visitas</th>
+                                        <th>Popularidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for page in popular_pages %}
+                                    <tr>
+                                        <td>
+                                            <code>{{ page[0] }}</code>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ page[1] }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     style="width: {{ (page[1] / popular_pages[0][1] * 100) if popular_pages else 0 }}%"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center py-3">Nenhum dado de páginas disponível</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-clock me-2"></i>Atividade em Tempo Real
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="realtime-activity">
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Carregando...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Carregando atividade...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tab: Logs Detalhados -->
+<div id="logs-tab" class="tab-content" style="display: none;">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-list me-2"></i>Logs de Acesso Recentes
+            </h5>
+            <div class="input-group" style="width: 300px;">
+                <input type="text" class="form-control" id="logSearch" placeholder="Filtrar logs...">
+                <button class="btn btn-outline-secondary" type="button" onclick="clearLogFilter()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if recent_logs %}
+                <div class="table-responsive">
+                    <table class="table table-hover" id="logsTable">
+                        <thead>
+                            <tr>
+                                <th>IP</th>
+                                <th>Usuário</th>
+                                <th>Página</th>
+                                <th>User Agent</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in recent_logs %}
+                            <tr>
+                                <td>
+                                    <code>{{ log[0] }}</code>
+                                </td>
+                                <td>
+                                    {% if log[4] %}
+                                        <span class="badge bg-success">{{ log[4] }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Anônimo</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <code>{{ log[2] }}</code>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ log[1][:50] }}{% if log[1]|length > 50 %}...{% endif %}</small>
+                                </td>
+                                <td>
+                                    <small>{{ log[3] }}</small>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center py-3">Nenhum log encontrado</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Tab: Analytics -->
+<div id="analytics-tab" class="tab-content" style="display: none;">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Distribuição de Navegadores
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="browserChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-globe me-2"></i>Top IPs
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ipChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-area me-2"></i>Tráfego por Hora (Últimas 24h)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="trafficChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showTab(tabName) {
+    // Esconder todas as abas
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+    });
+    
+    // Mostrar aba selecionada
+    document.getElementById(tabName + '-tab').style.display = 'block';
+    
+    // Atualizar botões
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Carregar dados específicos da aba
+    if (tabName === 'analytics') {
+        loadAnalyticsCharts();
+    } else if (tabName === 'overview') {
+        loadRealtimeActivity();
+    }
+}
+
+function loadRealtimeActivity() {
+    const container = document.getElementById('realtime-activity');
+    
+    // Simular atividade em tempo real
+    setInterval(() => {
+        const activities = [
+            'Novo usuário registrado',
+            'Tópico criado no fórum',
+            'Post publicado',
+            'Usuário fez login',
+            'Página visitada',
+            'Download realizado'
+        ];
+        
+        const activity = activities[Math.floor(Math.random() * activities.length)];
+        const time = new Date().toLocaleTimeString('pt-BR');
+        
+        container.innerHTML = `
+            <div class="activity-item mb-2 p-2 border-start border-primary border-3">
+                <div class="d-flex justify-content-between">
+                    <span>${activity}</span>
+                    <small class="text-muted">${time}</small>
+                </div>
+            </div>
+        ` + container.innerHTML;
+        
+        // Manter apenas os últimos 5 itens
+        const items = container.querySelectorAll('.activity-item');
+        if (items.length > 5) {
+            items[items.length - 1].remove();
+        }
+    }, 5000);
+}
+
+function loadAnalyticsCharts() {
+    // Gráfico de navegadores
+    const browserCtx = document.getElementById('browserChart').getContext('2d');
+    new Chart(browserCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Chrome', 'Firefox', 'Safari', 'Edge', 'Outros'],
+            datasets: [{
+                data: [45, 25, 15, 10, 5],
+                backgroundColor: [
+                    '#667eea',
+                    '#764ba2',
+                    '#f093fb',
+                    '#f5576c',
+                    '#4facfe'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+    
+    // Gráfico de IPs
+    const ipCtx = document.getElementById('ipChart').getContext('2d');
+    new Chart(ipCtx, {
+        type: 'bar',
+        data: {
+            labels: ['192.168.1.1', '10.0.0.1', '172.16.0.1', '127.0.0.1'],
+            datasets: [{
+                label: 'Acessos',
+                data: [120, 85, 60, 45],
+                backgroundColor: 'rgba(102, 126, 234, 0.8)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Gráfico de tráfego
+    const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+    const hours = Array.from({length: 24}, (_, i) => i + 'h');
+    const trafficData = Array.from({length: 24}, () => Math.floor(Math.random() * 100));
+    
+    new Chart(trafficCtx, {
+        type: 'line',
+        data: {
+            labels: hours,
+            datasets: [{
+                label: 'Acessos por Hora',
+                data: trafficData,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Filtro de logs
+document.getElementById('logSearch').addEventListener('input', function() {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#logsTable tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+    });
+});
+
+function clearLogFilter() {
+    document.getElementById('logSearch').value = '';
+    document.querySelectorAll('#logsTable tbody tr').forEach(row => {
+        row.style.display = '';
+    });
+}
+
+// Inicializar atividade em tempo real
+loadRealtimeActivity();
+
+// Auto-refresh dos dados a cada 30 segundos
+setInterval(() => {
+    if (document.getElementById('overview-tab').style.display !== 'none') {
+        location.reload();
+    }
+}, 30000);
+</script>
+{% endblock %}
